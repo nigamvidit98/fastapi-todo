@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Todo App</title>
+</head>
+<body>
+
+<h1>Todo List</h1>
+
+<input id="taskInput" placeholder="Enter task">
+<button onclick="addTask()">Add</button>
+
+<ul id="todoList"></ul>
+
+<script>
+const API = "http://127.0.0.1:8000";
+
+async function fetchTodos() {
+  const res = await fetch(`${API}/todos`);
+  const data = await res.json();
+
+  const list = document.getElementById("todoList");
+  list.innerHTML = "";
+
+  data.forEach(todo => {
+    const li = document.createElement("li");
+    li.innerHTML = `${todo.id}: ${todo.task}
+      <button onclick="deleteTask(${todo.id})">Delete</button>`;
+    list.appendChild(li);
+  });
+}
+
+async function addTask() {
+  const task = document.getElementById("taskInput").value;
+  await fetch(`${API}/todos?task=${task}`, { method: "POST" });
+  fetchTodos();
+}
+
+async function deleteTask(id) {
+  await fetch(`${API}/todos/${id}`, { method: "DELETE" });
+  fetchTodos();
+}
+
+fetchTodos();
+</script>
+
+</body>
+</html>
