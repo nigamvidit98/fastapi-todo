@@ -14,9 +14,15 @@ function App() {
   const [todos, setTodos] = useState([]);
 
   const fetchData = async () => {
+  try {
     const data = await getTodos();
     setTodos(data);
-  };
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+  
 
   useEffect(() => {
     fetchData();

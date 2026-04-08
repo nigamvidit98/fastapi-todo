@@ -2,15 +2,17 @@ version: "3"
 
 services:
   backend:
-    build: .
+    build: ./backend
     container_name: todo-backend
     ports:
       - "8000:8000"
+    restart: always
 
   frontend:
     build: ./todo-frontend
     container_name: todo-frontend
     ports:
-      - "3000:3000"
+      - "3000:80"
     depends_on:
       - backend
+    restart: always

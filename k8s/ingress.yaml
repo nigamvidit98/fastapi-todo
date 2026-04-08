@@ -4,11 +4,17 @@ metadata:
   name: fastapi-ingress
 spec:
   ingressClassName: nginx
+
+  tls:
+  - hosts:
+      - todo.local
+    secretName: todo-tls
+
   rules:
-  - http:
+  - host: todo.local
+    http:
       paths:
 
-      # API FIRST (important)
       - path: /api
         pathType: Prefix
         backend:
@@ -17,7 +23,6 @@ spec:
             port:
               number: 8000
 
-      # Frontend (handles / and /static automatically)
       - path: /
         pathType: Prefix
         backend:
