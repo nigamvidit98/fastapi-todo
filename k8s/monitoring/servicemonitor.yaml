@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: fastapi-backend-monitor
+  namespace: default
+  labels:
+    release: monitoring   # MUST match Prometheus selector
+spec:
+  selector:
+    matchLabels:
+      app: fastapi-backend   # <-- MUST match your service label (adjust if needed)
+
+  namespaceSelector:
+    matchNames:
+      - default
+
+  endpoints:
+    - port: http   # <-- MUST match service port name (we fix below)
+      path: /metrics
+      interval: 15s
