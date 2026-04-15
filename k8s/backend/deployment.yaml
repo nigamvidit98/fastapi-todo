@@ -13,7 +13,21 @@ spec:
         app: fastapi-backend
     spec:
       containers:
-      - name: backend
-        image: vnigam16/backend:v2
-        ports:
-        - containerPort: 8000
+        - name: backend
+          image: vnigam16/backend:v8
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+
+          env:
+            - name: MONGO_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: MONGO_DB
+
+            - name: MONGO_URI
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: MONGO_URI
